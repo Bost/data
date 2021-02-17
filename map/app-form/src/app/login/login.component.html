@@ -1,0 +1,46 @@
+<p-blockUI [blocked]="blocked">
+  <p-progressSpinner></p-progressSpinner>
+  <div class="block-ui-text">{{ loadingText }}</div>
+</p-blockUI>
+
+<div class="login-container">
+  <div class="login-form">
+    <div class="row">
+      <div class="col-12">
+        <h1>Stadtteilkarte bearbeiten &ndash; Login</h1>
+
+        <p>Da die Stadtteilkarte eine eigene Applikation darstellt, musst du dich nochmals mit deinen
+          <strong>Wordpress-Zugangsdaten</strong> einloggen.</p>
+      </div>
+    </div>
+    <form [formGroup]="loginForm">
+      <div class="row p-fluid">
+        <div class="col-12 p-field">
+          <label for="username">Username*</label>
+          <input pInputText
+                 id="username"
+                 formControlName="username"
+                 type="text"/>
+        </div>
+        <div class="col-12 p-field" style="margin-top: 16px;">
+          <label for="password">Passwort*</label>
+          <input pInputText
+                 id="password"
+                 formControlName="password"
+                 type="password"/>
+        </div>
+      </div>
+      <div class="row p-fluid">
+        <div class="col-12">
+          <p-button (click)="login()"
+                    type="submit"
+                    [disabled]="!loginForm.valid">
+            Login
+          </p-button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-toast key="loginToast"></p-toast>

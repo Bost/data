@@ -9,21 +9,35 @@ import {ButtonModule} from 'primeng/button';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AssociationFormDeactivateGuard, OptionsEditFormDeactivateGuard} from './association-form/guard';
 import {NotFoundComponent} from './not-found/not-found.component';
+import { LoginComponent } from './login/login.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {InputTextModule} from 'primeng/inputtext';
+import {BlockUIModule} from 'primeng/blockui';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {ToastModule} from 'primeng/toast';
+import {FocusTrapModule} from 'primeng/focustrap';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoginComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    AssociationFormModule,
-    ButtonModule,
-    NgbModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        AssociationFormModule,
+        ButtonModule,
+        NgbModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        BlockUIModule,
+        ProgressSpinnerModule,
+        ToastModule,
+        FocusTrapModule
+    ],
   bootstrap: [AppComponent],
   providers: [
     AssociationFormDeactivateGuard,

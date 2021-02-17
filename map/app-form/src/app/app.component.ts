@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import { version } from '../../package.json';
+import {version} from '../../package.json';
+import {LoginService} from './login/login.service';
 
 @Component({
   selector: 'app-root',
@@ -10,35 +11,13 @@ export class AppComponent {
   title = 'Stadtteilkarte - Daten eingeben';
   version = version;
 
-  isInFullscreen = false;
+  loggedIn = false;
 
-  get fullscreenEnabled(): boolean {
-    return document.fullscreenEnabled;
+  constructor(private loginService: LoginService) {
+
   }
 
-  get showCloseIcon(): boolean {
-    return this.isInFullscreen && !!document.fullscreenElement;
-  }
-
-  async toggleFullscreen(): Promise<void> {
-    this.isInFullscreen = !this.showCloseIcon;
-
-    if (this.isInFullscreen) {
-      await this.requestFullscreen(document.getElementById('fullscreen-content') || undefined);
-    } else {
-      await this.exitFullscreen();
-    }
-  }
-
-  async requestFullscreen(element?: HTMLElement): Promise<void> {
-    if (element) {
-      await element.requestFullscreen();
-    }
-  }
-
-  async exitFullscreen(): Promise<void> {
-    if (document.fullscreenEnabled) {
-      await document.exitFullscreen();
-    }
+  get loginStatus(): boolean {
+    return this.loginService.loginStatus;
   }
 }

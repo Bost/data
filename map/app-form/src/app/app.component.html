@@ -1,4 +1,10 @@
-<router-outlet></router-outlet>
+<div *ngIf="loginStatus; else logInForm">
+  <router-outlet></router-outlet>
+</div>
+
+<ng-template #logInForm>
+  <app-login></app-login>
+</ng-template>
 
 <div class="version">
   <small>{{ version }}</small>
