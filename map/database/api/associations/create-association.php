@@ -45,7 +45,26 @@ if (isset($postdata) && !empty($postdata)) {
     $images = $request->images;
 
     // Update.
-    $sql = "REPLACE INTO associations SET id = '$id', 
+    $sql = "INSERT INTO associations SET id = '$id', 
+                                       name = '$name', 
+                                       shortName = '$shortName',
+                                       lat = $lat, 
+                                       lng = $lng, 
+                                       addressLine1 = '$addressLine1',
+                                       addressLine2 = '$addressLine2',
+                                       addressLine3 = '$addressLine3',
+                                       street = '$street',
+                                       postcode = '$postcode',
+                                       city = '$city',
+                                       country = '$country',
+                                       goals_format = '$goals_format',
+                                       goals_text = '$goals_text',
+                                       activities_format = '$activities_format',
+                                       activities_text = '$activities_text',
+                                       districtList = '$districtList',
+                                       activityList = '$activityList',
+                                       current = 1
+                ON DUPLICATE KEY UPDATE
                                        name = '$name', 
                                        shortName = '$shortName',
                                        lat = $lat, 
@@ -77,7 +96,15 @@ if (isset($postdata) && !empty($postdata)) {
 			$fax = mysqli_real_escape_string($con, trim($contact->fax));
             $associationId = $id;
 
-            $sql .= "\n\nREPLACE INTO contacts SET id = '$contactId',
+            $sql .= "\n\nINSERT INTO contacts SET id = '$contactId',
+                                 name = '$contactName',
+                                 phone = '$phone',
+                                 mail = '$mail',
+								 fax = '$fax',
+                                 associationId = '$id',
+                                 orderIndex = $index,
+                                 current = 1
+                         ON DUPLICATE KEY UPDATE
                                  name = '$contactName',
                                  phone = '$phone',
                                  mail = '$mail',
@@ -100,7 +127,13 @@ if (isset($postdata) && !empty($postdata)) {
             $altText = mysqli_real_escape_string($con, trim($image->altText));
             $associationId = $id;
 
-            $sql .= "\n\nREPLACE INTO images SET id = '$imageId',
+            $sql .= "\n\nINSERT INTO images SET id = '$imageId',
+                                        url = '$url',
+                                        altText = '$altText',
+                                        associationId = '$id',
+                                        orderIndex = $index,
+                                        current = 1
+                         ON DUPLICATE KEY UPDATE
                                         url = '$url',
                                         altText = '$altText',
                                         associationId = '$id',
@@ -121,13 +154,18 @@ if (isset($postdata) && !empty($postdata)) {
             $linkText = mysqli_real_escape_string($con, trim($link->linkText));
             $associationId = $id;
 
-            $sql .= "\n\nREPLACE INTO links SET id = '$linkId',
+            $sql .= "\n\nINSERT INTO links SET id = '$linkId',
+                                       url = '$url',
+                                       linkText = '$linkText',
+                                       associationId = '$id',
+                                       orderIndex = $index,
+                                       current = 1
+                          ON DUPLICATE KEY UPDATE 
                                        url = '$url',
                                        linkText = '$linkText',
                                        associationId = '$id',
                                        orderIndex = $index,
                                        current = 1;";
-
             $index++;
         }
     }
@@ -143,14 +181,20 @@ if (isset($postdata) && !empty($postdata)) {
             $linkText = mysqli_real_escape_string($con, trim($socialMediaEntry->linkText));
             $associationId = $id;
 
-            $sql .= "\n\nREPLACE INTO socialmedia SET id = '$socialMediaId',
+            $sql .= "\n\nINSERT INTO socialmedia SET id = '$socialMediaId',
+                                              platform = '$platform',
+                                              url = '$url',
+                                              linkText = '$linkText',
+                                              associationId = '$id',
+                                              orderIndex = $index,
+                                              current = 1
+                          ON DUPLICATE KEY UPDATE
                                               platform = '$platform',
                                               url = '$url',
                                               linkText = '$linkText',
                                               associationId = '$id',
                                               orderIndex = $index,
                                               current = 1;";
-
             $index++;
         }
     }
