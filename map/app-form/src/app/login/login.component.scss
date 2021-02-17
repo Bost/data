@@ -1,5 +1,7 @@
+@import '../../styles.scss';
+
 .login-container {
-  max-width: 320px;
+  max-width: 360px;
   margin: auto;
   min-height: 90vh;
   display: flex;
@@ -9,5 +11,9 @@
   .login-form {
     width: 100%;
     display: block;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    border: 1px $blue solid;
   }
 }

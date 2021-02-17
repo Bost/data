@@ -11,6 +11,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {v4 as uuidv4} from 'uuid';
 import {Dropdown} from 'primeng/dropdown';
+import {LoginService} from '../../login/login.service';
 
 @Component({
   selector: 'app-edit-options-form',
@@ -55,7 +56,8 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
               private cdr: ChangeDetectorRef,
               private router: Router,
               private formBuilder: FormBuilder,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private loginService: LoginService) {
     this.mainMenuItems = [
       {
         label: 'Speichern',
@@ -325,6 +327,19 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
   async submit(): Promise<void> {
     this.blocked = true;
     this.loadingText = 'Schlagwörter werden gespeichert...';
+
+    const loggedIn = await this.loginService.checkLoginStatus();
+    if (!loggedIn) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Berechtigungsfehler',
+        detail: 'Konnte nicht gespeichert werden. Bitte loggen Sie sich erneut ein.',
+        key: 'editFormToast'
+      });
+      this.blocked = false;
+      return;
+    }
+
     const options = this.optionsForm.value.options.map((o: any) => {
       const category = o.category ? this.optionsForm.value.options.find((c: any) => c.value === o.category) : undefined;
       return {

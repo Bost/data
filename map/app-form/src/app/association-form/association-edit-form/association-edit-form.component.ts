@@ -9,6 +9,7 @@ import {MyHttpResponse} from '../../model/http-response';
 import {MysqlQueryService} from '../../services/mysql-query.service';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {InputSwitch} from 'primeng/inputswitch';
+import {LoginService} from '../../login/login.service';
 
 function contactFilledValidator(): ValidatorFn {
   return (control: FormGroup): { [key: string]: boolean } | null => {
@@ -120,7 +121,8 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
               private mySqlQueryService: MysqlQueryService,
               private mySqlPersistService: MysqlPersistService,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private loginService: LoginService) {
   }
 
   /**
@@ -526,6 +528,18 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
   async submit(): Promise<void> {
     this.emitBlockUi(true, 'Verein wird gespeichert...');
 
+    const loggedIn = await this.loginService.checkLoginStatus();
+    if (!loggedIn) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Berechtigungsfehler',
+        detail: 'Konnte nicht gespeichert werden. Bitte loggen Sie sich erneut ein.',
+        key: 'editFormToast'
+      });
+      this.emitBlockUi(false);
+      return;
+    }
+
     this.associationForm.controls.street.enable();
     this.associationForm.controls.postcode.enable();
     this.associationForm.controls.city.enable();
@@ -569,6 +583,19 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
       closeOnEscape: true,
       accept: async () => {
         this.emitBlockUi(true, 'Verein wird gelöscht...');
+
+        const loggedIn = await this.loginService.checkLoginStatus();
+        if (!loggedIn) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Berechtigungsfehler',
+            detail: 'Konnte nicht gelöscht werden. Bitte loggen Sie sich erneut ein.',
+            key: 'editFormToast'
+          });
+          this.emitBlockUi(false);
+          return;
+        }
+
         await this.mySqlPersistService.deleteAssociation(id).toPromise()
           .then(() => {
             this.emitBlockUi(false);
@@ -577,7 +604,7 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
               summary: 'Verein wurde gelöscht.',
               key: 'editFormToast'
             });
-            this.reload.emit({ id: undefined, showDialog: false });
+            this.reload.emit({id: undefined, showDialog: false});
           })
           .catch((reason) => {
             this.emitBlockUi(false);

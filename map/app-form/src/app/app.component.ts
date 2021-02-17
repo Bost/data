@@ -11,11 +11,8 @@ export class AppComponent {
   title = 'Stadtteilkarte - Daten eingeben';
   version = version;
 
-  loggedIn = false;
+  constructor(private loginService: LoginService) {}
 
-  constructor(private loginService: LoginService) {
-
-  }
 
   get loginStatus(): boolean {
     return this.loginService.loginStatus;

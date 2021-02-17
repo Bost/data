@@ -63,7 +63,7 @@ export class WordpressAuthService {
     return this.httpClient.post(
       `${this.AUTH_SERVER_BASE_PATH}/jwt-auth/v1/token/validate`,
       {},
-      {headers: headers}
+      {headers}
     ).pipe(
       timeout(this.CONNECTION_TIMEOUT),
       catchError(err => {
@@ -73,7 +73,7 @@ export class WordpressAuthService {
     );
   }
 
-  async getValidateAuthToken(token: string): Promise<MyHttpResponse<any>> {
+  async getValidateAuthToken(token?: string): Promise<MyHttpResponse<any>> {
     return await this.validateAuthToken(token).toPromise().then(
       (res) => {
         if (!res) {

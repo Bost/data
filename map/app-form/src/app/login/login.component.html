@@ -3,7 +3,7 @@
   <div class="block-ui-text">{{ loadingText }}</div>
 </p-blockUI>
 
-<div class="login-container">
+<div class="login-container" *ngIf="!loginStatus">
   <div class="login-form">
     <div class="row">
       <div class="col-12">

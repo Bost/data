@@ -20,13 +20,17 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required])
   });
 
+  get loginStatus(): boolean {
+    return this.loginService.loginStatus;
+  }
+
   constructor(private loginService: LoginService,
               private messageService: MessageService) {
   }
 
   @HostListener('document:keydown.escape', ['$event'])
   async onKeydownHandler(event: KeyboardEvent): Promise<void> {
-    if (!this.loginForm.valid && event.key === 'Enter') {
+    if (!this.loginStatus && !this.loginForm.valid && event.key === 'Enter') {
       await this.login();
     }
   }

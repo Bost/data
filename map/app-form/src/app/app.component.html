@@ -1,10 +1,8 @@
-<div *ngIf="loginStatus; else logInForm">
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>
 
-<ng-template #logInForm>
+<div class="login-overlay" [ngClass]="{ 'logged-in' : loginStatus }">
   <app-login></app-login>
-</ng-template>
+</div>
 
 <div class="version">
   <small>{{ version }}</small>
