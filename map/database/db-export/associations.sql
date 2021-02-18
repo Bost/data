@@ -2,10 +2,10 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Erstellungszeit: 13. Feb 2021 um 13:06
--- Server-Version: 10.4.17-MariaDB
--- PHP-Version: 8.0.0
+-- Host: 127.0.0.3:3306
+-- Erstellungszeit: 18. Feb 2021 um 20:06
+-- Server-Version: 5.6.19-67.0-log
+-- PHP-Version: 7.3.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -192,11 +192,11 @@ CREATE TABLE `associations` (
   `city` varchar(128) DEFAULT NULL,
   `country` varchar(128) DEFAULT NULL,
   `goals_format` varchar(64) DEFAULT NULL,
-  `goals_text` text DEFAULT NULL,
+  `goals_text` text,
   `activities_format` varchar(64) DEFAULT NULL,
-  `activities_text` text DEFAULT NULL,
-  `activityList` longtext DEFAULT NULL,
-  `districtList` longtext DEFAULT NULL,
+  `activities_text` text,
+  `activityList` longtext,
+  `districtList` longtext,
   `current` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -205,13 +205,13 @@ CREATE TABLE `associations` (
 --
 
 INSERT INTO `associations` (`id`, `name`, `shortName`, `lat`, `lng`, `addressLine1`, `addressLine2`, `addressLine3`, `street`, `postcode`, `city`, `country`, `goals_format`, `goals_text`, `activities_format`, `activities_text`, `activityList`, `districtList`, `current`) VALUES
-('00de259f-254a-491f-8555-1ed658c6a85b', 'Verein zur Förderung der zeitgemäßen Lebensweise Baden-Württemberg e. V.', 'CYDD BW e. V.', 48.764363250663, 9.1746644584441, '', '', '', 'Filderstraße 19', '70180', 'Stuttgart', NULL, 'plain', '', 'plain', 'Bildung (Stipendien für Studierende in der Türkei, Vorträge), Musik (musikalische Früherziehung).', '[\"9e582442-f85e-42b0-a18b-f0d9709b6a1a\",\"dcf3eca4-ef5d-4aeb-9640-1ab8c06cc84e\",\"9220d0a4-6442-4ea3-a0d2-4f0bbe4339f1\"]', '[\"d4b4dc39-3aa8-421b-991c-a37e3a05f08f\",\"d3ea05ed-5dcd-4d47-a2aa-18e4eb6294c0\",\"5a291e38-df35-4b79-bcd5-c0fef2eb07bb\",\"cc397b39-43ee-4d15-9310-746144c207ff\",\"a64b2ee7-ca34-427c-9a9c-df8f5f29319e\",\"e0c9c7a7-d317-4662-93e5-28f281df4fd9\",\"6903278b-dd88-4ae3-b08f-1e3c17aef3da\",\"4e5d36ad-8387-47c5-9c48-5a5e933e6812\",\"77861c3b-3c9c-4ba9-ba03-c6f8832394b2\",\"068af935-dc42-40a4-98ef-e59352e9706c\",\"6f9350a6-0d94-44f4-86a0-d7e0c8edf9db\",\"6069e093-59e5-45b5-8854-fc1691222472\",\"45b57423-e7ea-4e3e-ba37-5e0ec506b1f6\",\"cc67be51-58de-4109-ae78-2b0c018e27da\",\"484d4d38-c9e3-4026-833d-69c3190422d9\",\"bbf0d197-fcd6-4548-8548-ef1840057018\",\"f3aa4a7e-5aac-46b9-9bcf-ced8fd0fa7d0\",\"32db5a17-3732-498e-a6c9-1f87f79a7ecb\",\"4c2c4518-f53d-409d-9c3c-35dbd7ec5395\",\"03913c8d-c21d-470a-90fc-b3032fc33f4a\",\"e5c49e46-df39-46aa-af7c-c59c8d9765eb\",\"52fc72f5-5b87-4eea-a662-87dc14180f1f\",\"632866a1-098a-4e0a-8bfe-e786fd6bdb00\",\"ff52e1fb-b421-46d4-828b-9e1298a441cf\",\"cf4658bb-885d-4937-bfd8-c5a7963a22d0\",\"bab504b9-7f1b-42cf-a01e-ce322fe25590\",\"1a68b204-3bc7-4ebd-a5a9-effc1b65dcb1\",\"845c4868-a060-4f68-861a-f880404bbf11\"]', 1),
+('00de259f-254a-491f-8555-1ed658c6a85b', 'Verein zur Förderung der zeitgemäßen Lebensweise Baden-Württemberg e. V.', 'CYDD BW e. V.', 48.764363250663, 9.1746644584441, '', '', '', 'Filderstraße 19', '70180', 'Stuttgart', '', 'plain', '', 'plain', 'Bildung (Stipendien für Studierende in der Türkei, Vorträge), Musik (musikalische Früherziehung).', '[\"9e582442-f85e-42b0-a18b-f0d9709b6a1a\",\"dcf3eca4-ef5d-4aeb-9640-1ab8c06cc84e\",\"9220d0a4-6442-4ea3-a0d2-4f0bbe4339f1\"]', '[\"d4b4dc39-3aa8-421b-991c-a37e3a05f08f\",\"d3ea05ed-5dcd-4d47-a2aa-18e4eb6294c0\",\"5a291e38-df35-4b79-bcd5-c0fef2eb07bb\",\"cc397b39-43ee-4d15-9310-746144c207ff\",\"a64b2ee7-ca34-427c-9a9c-df8f5f29319e\",\"e0c9c7a7-d317-4662-93e5-28f281df4fd9\",\"6903278b-dd88-4ae3-b08f-1e3c17aef3da\",\"4e5d36ad-8387-47c5-9c48-5a5e933e6812\",\"77861c3b-3c9c-4ba9-ba03-c6f8832394b2\",\"068af935-dc42-40a4-98ef-e59352e9706c\",\"6f9350a6-0d94-44f4-86a0-d7e0c8edf9db\",\"6069e093-59e5-45b5-8854-fc1691222472\",\"45b57423-e7ea-4e3e-ba37-5e0ec506b1f6\",\"cc67be51-58de-4109-ae78-2b0c018e27da\",\"484d4d38-c9e3-4026-833d-69c3190422d9\",\"bbf0d197-fcd6-4548-8548-ef1840057018\",\"f3aa4a7e-5aac-46b9-9bcf-ced8fd0fa7d0\",\"32db5a17-3732-498e-a6c9-1f87f79a7ecb\",\"4c2c4518-f53d-409d-9c3c-35dbd7ec5395\",\"03913c8d-c21d-470a-90fc-b3032fc33f4a\",\"e5c49e46-df39-46aa-af7c-c59c8d9765eb\",\"52fc72f5-5b87-4eea-a662-87dc14180f1f\",\"632866a1-098a-4e0a-8bfe-e786fd6bdb00\",\"ff52e1fb-b421-46d4-828b-9e1298a441cf\",\"cf4658bb-885d-4937-bfd8-c5a7963a22d0\",\"bab504b9-7f1b-42cf-a01e-ce322fe25590\",\"1a68b204-3bc7-4ebd-a5a9-effc1b65dcb1\",\"845c4868-a060-4f68-861a-f880404bbf11\"]', 1),
 ('0110dd61-0bf5-4e62-abe5-772e1bd92d03', 'Loyenge e. V.', '', 48.772798972964, 9.2432918550495, '', '', '', 'Ulmer Straße 347', '70327', 'Stuttgart-Wangen', NULL, 'plain', 'Besseres Verstehen der Situation der Afrikaner in Europa und Afrika. Globalisierung der Kulturen. Vermittlung und Durchführung von Veranstaltungen mit Musik, Infos, Workshops.', 'plain', 'Bildung (Instrumentalunterricht: Trommelkurse \"Afrikanisches Trommeln\" für alle Altersgruppen), Kultur und Kunst (Theater, Kunst, Vorträge), Gastronomie (Benefizveranstaltungen mit traditionell afrikanischem Essen), Sport (Tanzkurse \"African Dance\"), Musik (Chor-Gesang, Afrikanischer Chor mit Hif Anga Belowi, Auftritte von Bands mit moderner und traditioneller afrikanischer Musik, Band \"Hif & Afro Soleil\" (Afropop, Reggae), Band \"Hif & Zanga\" (traditionelle Musik aus Afrika).', '[\"6d5e911b-b877-468d-9fd9-cd0d015d5170\",\"e8908bfd-1f08-482b-9f43-df8c9e0ce0c7\",\"9220d0a4-6442-4ea3-a0d2-4f0bbe4339f1\",\"451b5a6b-f6c0-42b4-8b38-7ac7c40989ee\",\"a62583fa-4dc8-419f-a583-0e55bcc59e03\",\"191f9550-6dc2-42ef-bd2a-2735f4f7b189\",\"2e37f150-4703-4c6e-83f2-5e258c99fbdf\",\"9228d2bb-9271-4c0d-9a8e-37af82ea1d34\",\"abc9a1a3-b8ac-4ba3-b64d-b93fe702f129\",\"5e63b584-e7a0-468e-95ae-4efa306bf9bc\",\"ab4dcc22-1389-49a2-8a35-a37d496e90cb\",\"d5158be0-2840-474a-a7cb-d5307f1d9b78\"]', '[\"cf4658bb-885d-4937-bfd8-c5a7963a22d0\",\"068af935-dc42-40a4-98ef-e59352e9706c\"]', 1),
 ('030f5468-5e92-4232-aaa6-6780ed1db82c', 'Club Español Stuttgart e. V.', NULL, 48.780504677692, 9.1826130578386, 'keine öffentliche Anschrift', '', '', '', '', '', NULL, 'plain', 'Förderung, Erhalt und Entwicklung der spanischen Kultur und Sprache, traditionelles Brauchtum und das Miteinander von Spaniern, Deutschen und anderen spanischsprachigen Nationalitäten. Förderung von Sport und Internationaler Gesinnung, der Toleranz auf allen Gebieten der Kultur und des Völkerverständigungsgedankens. Unterstützung von hilfsbedürftigen Personen und Hilfsorganisationen.', 'plain', 'Bildung (Seminare, Vorträge, Workshops), Kultur und Kunst (Spanische Kulturtage, Kunst, Film, Theater), Gastronomie (Kochkurse, Stadtfeste), Sport (Fußsballturniere, Tanzkurse, traditioneller Tanz Flamenco)​, Musik (Konzerte).', '[\"8cecdd4d-57f5-47b2-ad1d-c6a83df8e9a3\",\"1eacdec4-6689-4bb7-bff9-b2ec5259f6ac\",\"80c76142-7a20-46c3-bf48-ecf80bd88036\",\"5e63b584-e7a0-468e-95ae-4efa306bf9bc\",\"4fdedb59-a2ec-4ce3-a864-9f2ee54de161\",\"e8908bfd-1f08-482b-9f43-df8c9e0ce0c7\",\"474a8ff3-34f9-4912-94b1-4c84d1304a9d\",\"6d5e911b-b877-468d-9fd9-cd0d015d5170\",\"6232745b-ae38-4386-8ce9-38181ec03167\",\"5cf4a2a2-30ac-491f-b9ec-3ef8920a52a9\",\"b44949e8-9b04-4fbc-99e7-e278f0be08fc\",\"cdb5b6d0-f818-41fa-b3b2-056151253f29\",\"07dbf630-8ebc-4ee4-9587-ebac31c7bd4f\"]', '[\"def5709b-04dd-409e-a3d9-2831186574d7\"]', 1),
 ('04659eb2-e809-4543-b987-ad491468593b', 'Deutsch-Rumänisches Forum e. V.', '', 48.776958799926, 9.1635527940832, '', '', '', 'Schloßstraße 76', '70176', 'Stuttgart', NULL, 'plain', 'Orientierung – Akkommodation, zivilgesellschaftliche Inklusion in Stuttgart für rumänische und moldauische Diaspora.', 'plain', 'Bildung (Multiplikator für Stuttgarter Bildung und Workshops), Kultur und Kunst (Kulturveranstaltungen als Treffen der Gemeinde zu diversen Themen und Traditionen Rumäniens), Beratung (Telefon Hotline – kostenlose Sofortberatung).', '[\"a50b8b9f-e427-4057-9769-1e6c99eee205\",\"2ffe3540-9b42-4c60-a385-1ad316b61e60\",\"9220d0a4-6442-4ea3-a0d2-4f0bbe4339f1\",\"d0634bc5-2e3e-480b-b612-9cdddb26f208\",\"bca4abd3-7782-49aa-8e02-a5bb389d72a1\",\"e8908bfd-1f08-482b-9f43-df8c9e0ce0c7\"]', '[\"cf4658bb-885d-4937-bfd8-c5a7963a22d0\"]', 1),
 ('0991ef8a-2e54-4bb6-a2a9-523f35982a40', 'Asociación Ecuatoriana e. V.', '', 48.77540678015, 9.1552397699851, '', '', '', 'Bebelstraße 22', '70193', 'Stuttgart', NULL, 'plain', 'Das Land Ecuador und seine Kultur der deutschen Bevölkerung näher bringen.', 'plain', 'Entwicklung und Zusammenarbeit (Integrationshilfe, Unterstützung von Ecuadorianer*innen in Deutschland), Gastronomie (traditionelles ecuadorianisches Essen), Sport (Tanz).', '[\"fdbc9436-c6fd-40c4-9154-30fad2acd582\",\"451b5a6b-f6c0-42b4-8b38-7ac7c40989ee\",\"80c76142-7a20-46c3-bf48-ecf80bd88036\"]', '[\"f15af137-6b8b-44f2-927e-5bfc0bb86ca9\"]', 1),
 ('171d9f6d-dd62-4113-b262-949692e790e8', 'Internationaler Musik- und Kulturverein Klangoase e. V.', 'Klangoase e. V.', 48.839762929317, 9.1930024329074, '', '', '', 'Sauerkirschenweg 32', '70437', 'Stuttgart', NULL, 'plain', 'Unterschiedliche Kinder und Jugendliche mithilfe von Musik zusammenzubringen. Durch gemeinsames Musizieren stärkt der Verein die Persönlichkeit von Kindern, Jugendlichen und Erwachsenen sowie das Verständnis füreinander. Ein besonderer Schwerpunkt des Vereins ist die interkulturelle Arbeit mit dem Ziel, ein multinationales Orchester entstehen zu lassen.', 'plain', 'Bildung (Instrumentalunterricht: Gitarre, Klavier, Geige, Blockflöte, Cello, musikalische Früherziehung (M.F.E.), M.F.E.-unterricht in der Muttersprache Türkisch, Unterricht im Musikstil „Klassik“), Musik (Orchester, Chor-Gesang).', '[\"a62583fa-4dc8-419f-a583-0e55bcc59e03\",\"513b09ab-eb2f-4407-805b-44dffae4c4b1\",\"9e582442-f85e-42b0-a18b-f0d9709b6a1a\",\"333fa33d-34ed-4424-8d43-0b04df745bad\",\"ebfac38a-7acd-48ae-b79c-49441f98937b\",\"20201b37-683d-4e16-ae4f-3c89e63fa689\",\"c844cb92-75fd-470f-a97a-9ad1235f9fb9\"]', '[\"bab504b9-7f1b-42cf-a01e-ce322fe25590\",\"1a68b204-3bc7-4ebd-a5a9-effc1b65dcb1\"]', 1),
-('195c1cfc-2e0a-4842-8700-d2f716e43ae0', 'ABADÁ Capoeira e. V.', '', 48.804819846049, 9.2220602878746, 'keine öffentliche Anschrift', '', '', '', '', '', NULL, 'plain', '', 'plain', 'Sport (Tanz-Kampfsport, Sport im Park, Functional Fitness).', '[\"80c76142-7a20-46c3-bf48-ecf80bd88036\",\"a04fc7da-497c-4c9f-a67b-f7f96bc987a9\",\"f4a30eea-a163-433b-ba70-24b27546527d\",\"d64949fb-be56-48c2-a1cc-cb65acea6b85\",\"e5f9e348-c3a8-4491-8f4d-241bc1022e9d\"]', '[\"d3ea05ed-5dcd-4d47-a2aa-18e4eb6294c0\"]', 1),
+('195c1cfc-2e0a-4842-8700-d2f716e43ae0', 'ABADÁ Capoeira e. V.', '', 48.804819846049, 9.2220602878746, 'Keine öffentliche Anschrift', '', '', '', '', '', '', 'plain', '', 'plain', 'Sport (Tanz-Kampfsport, Sport im Park, Functional Fitness).', '[\"80c76142-7a20-46c3-bf48-ecf80bd88036\",\"a04fc7da-497c-4c9f-a67b-f7f96bc987a9\",\"f4a30eea-a163-433b-ba70-24b27546527d\",\"d64949fb-be56-48c2-a1cc-cb65acea6b85\",\"e5f9e348-c3a8-4491-8f4d-241bc1022e9d\"]', '[\"d3ea05ed-5dcd-4d47-a2aa-18e4eb6294c0\"]', 1),
 ('19837db4-8b34-44ff-95fb-de5d88545f4d', 'Firkat, klassisch-türkischer Musikverein Stuttgart e. V.', 'Firkat e.V.', 48.79683028478, 9.1935285386757, '', '', '', 'Mittnachtstraße 18', '70191', 'Stuttgart', NULL, 'plain', 'Eine Vereinigung und Verbindung zur Förderung der türkischen Kultur.', 'plain', 'Bildung (Noten- und Instrumentenunterricht für Kinder, Jugendliche, Eltern und Erwachsene), Kultur und Kunst (Konzerte), Musik (klassische türkische Musik, Chor-Gesang).', '[\"333fa33d-34ed-4424-8d43-0b04df745bad\",\"ebfac38a-7acd-48ae-b79c-49441f98937b\",\"a62583fa-4dc8-419f-a583-0e55bcc59e03\",\"b44949e8-9b04-4fbc-99e7-e278f0be08fc\",\"abc9a1a3-b8ac-4ba3-b64d-b93fe702f129\"]', '[\"cc67be51-58de-4109-ae78-2b0c018e27da\"]', 1),
 ('219d2242-1c30-4493-be65-52cb9978f23e', 'Kulturverein Slovenija-Stuttgart e. V.', '', 48.773637010403, 9.1918825176244, '', '', '', 'Stafflenbergstraße 64', '70184', 'Stuttgart', NULL, 'plain', 'Förderung und Pflege des slowenischen kulturellen Lebens in Stuttgart.', 'plain', 'Bildung (Sprachförderung bei Kindern und Jugendlichen), Kultur und Kunst (literarische Abende, Kulturabende), Musik (Veranstaltungen mit verschiedenen Chören und Gesangsgruppen aus Slowenien).', '[\"a1db41c6-dd67-49d6-95a1-7076aad5cb06\",\"e8908bfd-1f08-482b-9f43-df8c9e0ce0c7\",\"73dff0c6-2787-41b4-9fff-05d46457fa2c\",\"a62583fa-4dc8-419f-a583-0e55bcc59e03\",\"513b09ab-eb2f-4407-805b-44dffae4c4b1\",\"b44949e8-9b04-4fbc-99e7-e278f0be08fc\"]', '[\"bbf0d197-fcd6-4548-8548-ef1840057018\"]', 1),
 ('2417c64b-cb09-4e84-8d15-e972a8c6e313', 'Punto de Encuentro e. V.', '', 48.775163349043, 9.1771635155149, '', '', '', 'Hirschstraße 12', '70173', 'Stuttgart', NULL, 'plain', 'Eine interkulturelle Begegnungsstätte für Menschen, die in der spanischen und deutschen Kultur verwurzelt sind, für Familien mit spanisch sprechenden Mitgliedern, für Eltern, die Interesse an bilingualer Erziehung für ihre Kinder haben.', 'plain', 'Bildung (muttersprachlicher Spanischunterricht, Bastel-Workshops, Handwerken, Experimentieren), Kultur und Kunst (Vermittlung der spanischen Sprache und Kultur, Feste und Feiern zum Gedanken- und Erfahrungsaustausch, Ausflüge und Besuche kultureller und wissenschaftlicher Einrichtungen und Museen), Entwicklung und Zusammenarbeit (Unterstützung von Personen, die aus der spanischen Kultur stammen oder die sich der spanischen Sprache und Kultur verbunden fühlen), Sport (Yoga).', '[\"c844cb92-75fd-470f-a97a-9ad1235f9fb9\",\"96745945-5724-4d0e-b6e1-10013710d046\",\"bca4abd3-7782-49aa-8e02-a5bb389d72a1\",\"3d5da784-d4e5-4489-94f5-8de4f253a4a4\",\"052b4738-3d8b-4ed2-9d07-6e0a8b88b565\",\"e8908bfd-1f08-482b-9f43-df8c9e0ce0c7\",\"fdbc9436-c6fd-40c4-9154-30fad2acd582\",\"4ca75fe6-6764-4b6f-a525-abaa9bffa2cf\"]', '[\"def5709b-04dd-409e-a3d9-2831186574d7\"]', 1),
@@ -641,7 +641,7 @@ ALTER TABLE `activities`
 -- Constraints der Tabelle `contacts`
 --
 ALTER TABLE `contacts`
-  ADD CONSTRAINT `contacts_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `contacts_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `districts`
@@ -653,19 +653,19 @@ ALTER TABLE `districts`
 -- Constraints der Tabelle `images`
 --
 ALTER TABLE `images`
-  ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `links`
 --
 ALTER TABLE `links`
-  ADD CONSTRAINT `links_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `links_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `socialmedia`
 --
 ALTER TABLE `socialmedia`
-  ADD CONSTRAINT `socialmedia_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `socialmedia_ibfk_1` FOREIGN KEY (`associationId`) REFERENCES `associations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

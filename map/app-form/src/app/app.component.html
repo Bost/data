@@ -1,9 +1,7 @@
 <router-outlet></router-outlet>
 
-<div class="login-overlay" [ngClass]="{ 'logged-in' : loginStatus }">
-  <app-login></app-login>
-</div>
-
 <div class="version">
   <small>{{ version }}</small>
 </div>
+
+<app-login></app-login>

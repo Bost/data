@@ -250,8 +250,8 @@ p-toast .p-toast {
   z-index: 19000 !important;
 }
 
-p-blockUI .p-blockui-document {
-  z-index: 30000;
+.p-blockui-document {
+  z-index: 30000 !important;
   background-color: rgba(0, 0, 0, 0.67) !important;
 }
 

@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
       this.loginForm.value.username,
       this.loginForm.value.password
     );
+    this.loginForm.controls.password.setValue('');
     this.blocked = false;
     if (!!res) {
       this.messageService.add({

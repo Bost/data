@@ -6,12 +6,23 @@ import {WordpressAuthService} from '../services/wordpress-auth.service';
 })
 export class LoginService {
   constructor(private wordpressAuthService: WordpressAuthService) {
+    setInterval(async () => {
+      if (!!this.token) {
+        await this.checkLoginStatus();
+      }
+    }, 60000);
   }
-
-  private token: string | undefined;
 
   get loginStatus(): boolean {
     return !!this.token;
+  }
+
+  get token(): string | undefined {
+    return localStorage.getItem('wordpress-jwt');
+  }
+
+  set token(token: string | undefined) {
+    localStorage.setItem('wordpress-jwt', (token || ''));
   }
 
   async login(username: string, password: string): Promise<boolean> {
