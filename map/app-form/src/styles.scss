@@ -323,6 +323,10 @@ fieldset, div.fieldset {
   margin-right: 0;
 }
 
+.form-array div:nth-child(2n) .form-array-block:not(.invalid-block) {
+  background-color: rgb(251, 251, 247);
+}
+
 .form-array-remove, .form-array-add {
   p-button ::ng-deep .p-button-label {
     display: none;
@@ -342,7 +346,7 @@ fieldset, div.fieldset {
     width: 35px !important;
     padding-left: 9px;
     padding-right: 9px;
-    height: 40px !important;
+    height: 42px !important;
 
     i {
       width: 16px !important;

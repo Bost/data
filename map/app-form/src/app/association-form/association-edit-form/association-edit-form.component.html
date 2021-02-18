@@ -175,13 +175,13 @@
         <h4>Kontakte</h4>
       </div>
     </div>
-    <div class="row"
+    <div class="row form-array"
          *ngIf="getFormGroupsFromFormArray(associationForm.controls.contacts)"
          formArrayName="contacts">
       <div class="col-12"
            *ngFor="let contactFormGroup of getFormGroupsFromFormArray(associationForm.controls.contacts); index as i"
            [formGroup]="contactFormGroup">
-        <div class="row p-fluid"
+        <div class="row p-fluid form-array-block"
              [ngClass]="{ 'invalid-block': !getFormArrayFormGroup('contacts', i)?.valid
                         || (!contactFormGroup.value.name && !contactFormGroup.value.phone && !contactFormGroup.value.fax && !contactFormGroup.value.mail)}">
           <div class="p-field col-xs-12 col-md-6">
@@ -277,13 +277,13 @@
         <h4>Bilder</h4>
       </div>
     </div>
-    <div class="row"
+    <div class="row form-array"
          *ngIf="getFormGroupsFromFormArray(associationForm.controls.images)"
          formArrayName="contacts">
       <div class="col-12"
            *ngFor="let imageFormGroup of getFormGroupsFromFormArray(associationForm.controls.images); index as i"
            [formGroup]="imageFormGroup">
-        <div class="row p-fluid"
+        <div class="row p-fluid form-array-block"
              [ngClass]="{ 'invalid-block': !getFormArrayFormGroup('images', i)?.valid }">
           <div class="p-field col-xs-12 col-md-6">
             <label for="image-{{i}}-format-input">Bild-URL*</label>
@@ -330,13 +330,13 @@
         <h4>Links</h4>
       </div>
     </div>
-    <div class="row"
+    <div class="row form-array"
          *ngIf="getFormGroupsFromFormArray(associationForm.controls.images)"
          formArrayName="links">
       <div class="col-12"
            *ngFor="let linkFormGroup of getFormGroupsFromFormArray(associationForm.controls.links); index as i"
            [formGroup]="linkFormGroup">
-        <div class="row p-fluid"
+        <div class="row p-fluid form-array-block"
              [ngClass]="{ 'invalid-block': !getFormArrayFormGroup('links', i)?.valid }">
           <div class="p-field col-xs-12 col-md-6">
             <label for="link-{{i}}-url-input">URL*</label>
@@ -379,13 +379,13 @@
     </div>
 
     <h4>Social Media</h4>
-    <div class="row"
+    <div class="row form-array"
          *ngIf="getFormGroupsFromFormArray(associationForm.controls.socialMedia)"
          formArrayName="socialMedia">
       <div class="col-12"
            *ngFor="let linkFormGroup of getFormGroupsFromFormArray(associationForm.controls.socialMedia); index as i"
            [formGroup]="linkFormGroup">
-        <div class="row p-fluid"
+        <div class="row p-fluid form-array-block"
              [ngClass]="{ 'invalid-block': !getFormArrayFormGroup('socialMedia', i)?.valid }">
           <div class="p-field col-xs-12 col-md-4">
             <label for="social-media-{{i}}-platform-input">Plattform</label>
