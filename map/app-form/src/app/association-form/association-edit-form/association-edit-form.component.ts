@@ -93,7 +93,15 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
   activitiesOptions: DropdownOption[] = [];
 
   isPublicAddress = false;
-  showPreview = false;
+
+  get showPreview(): boolean {
+    return localStorage.getItem('show-preview') === 'true';
+  }
+
+  set showPreview(val: boolean) {
+    const stringVal: string = val ? 'true' : 'false';
+    localStorage.setItem('show-preview', stringVal);
+  }
 
   editFormChanges$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
@@ -136,7 +144,7 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
     }
   }
 
-  getSubOptions(optionList: any[], selectedOptions: any[]) {
+  getSubOptions(optionList: any[], selectedOptions: any[]): any[] {
     return getSubOptions(optionList, selectedOptions);
   }
 
