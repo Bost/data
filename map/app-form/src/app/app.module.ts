@@ -9,7 +9,7 @@ import {ButtonModule} from 'primeng/button';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AssociationFormDeactivateGuard, OptionsEditFormDeactivateGuard} from './association-form/guard';
 import {NotFoundComponent} from './not-found/not-found.component';
-import { LoginComponent } from './login/login.component';
+// import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {BlockUIModule} from 'primeng/blockui';
@@ -20,8 +20,8 @@ import {FocusTrapModule} from 'primeng/focustrap';
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent,
-    LoginComponent
+    NotFoundComponent
+    // , LoginComponent
   ],
     imports: [
         BrowserModule,

@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {v4 as uuidv4} from 'uuid';
 import {Dropdown} from 'primeng/dropdown';
-import {LoginService} from '../../login/login.service';
+// import {LoginService} from '../../login/login.service';
 
 @Component({
   selector: 'app-edit-options-form',
@@ -36,7 +36,7 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
   loadingText = 'Schlagwörter werden abgerufen...';
 
   sub: Subscription | undefined;
-  loginStatusChangeSub: Subscription | undefined;
+  // loginStatusChangeSub: Subscription | undefined;
 
   sidebarExpanded = true;
 
@@ -57,8 +57,9 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
               private cdr: ChangeDetectorRef,
               private router: Router,
               private formBuilder: FormBuilder,
-              private route: ActivatedRoute,
-              private loginService: LoginService) {
+              private route: ActivatedRoute
+              // , private loginService: LoginService
+             ) {
     this.mainMenuItems = [
       {
         label: 'Speichern',
@@ -99,15 +100,16 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
             }
           }
         ]
-      },
-      {
-        label: 'Ausloggen',
-        icon: 'pi pi-sign-out',
-        command: async () => {
-          this.loginService.removeToken();
-        },
-        disabled: !this.loginService.loginStatus
       }
+      // ,
+      // {
+      //   label: 'Ausloggen',
+      //   icon: 'pi pi-sign-out',
+      //   command: async () => {
+      //     this.loginService.removeToken();
+      //   },
+      //   disabled: !this.loginService.loginStatus
+      // }
     ];
   }
 
@@ -120,17 +122,17 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.loginStatusChangeSub = this.loginService.loginStatusChange$.subscribe((status: boolean) => {
-      this.mainMenuItems = this.mainMenuItems.map((item: MenuItem) => {
-        if (item.label === 'Ausloggen') {
-          return {
-            ...item,
-            disabled: !status
-          };
-        }
-        return item;
-      });
-    });
+    // this.loginStatusChangeSub = this.loginService.loginStatusChange$.subscribe((status: boolean) => {
+    //   this.mainMenuItems = this.mainMenuItems.map((item: MenuItem) => {
+    //     if (item.label === 'Ausloggen') {
+    //       return {
+    //         ...item,
+    //         disabled: !status
+    //       };
+    //     }
+    //     return item;
+    //   });
+    // });
 
     if (this.optionType) {
       await this.reset(this.optionType);
@@ -349,18 +351,19 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
     this.blocked = true;
     this.loadingText = 'Schlagwörter werden gespeichert...';
 
-    const loggedIn = await this.loginService.checkLoginStatus();
-    if (!loggedIn) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Berechtigungsfehler',
-        detail: 'Konnte nicht gespeichert werden. Bitte loggen Sie sich erneut ein.',
-        key: 'editFormToast'
-      });
-      this.blocked = false;
-      return;
-    }
+    // const loggedIn = await this.loginService.checkLoginStatus();
+    // if (!loggedIn) {
+    //   this.messageService.add({
+    //     severity: 'error',
+    //     summary: 'Berechtigungsfehler',
+    //     detail: 'Konnte nicht gespeichert werden. Bitte loggen Sie sich erneut ein.',
+    //     key: 'editFormToast'
+    //   });
+    //   this.blocked = false;
+    //   return;
+    // }
 
+    console.log("Saving...")
     const options = this.optionsForm.value.options.map((o: any) => {
       const category = o.category ? this.optionsForm.value.options.find((c: any) => c.value === o.category) : undefined;
       return {
@@ -747,6 +750,6 @@ export class OptionsEditFormComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
     this.formChangeSub?.unsubscribe();
-    this.loginStatusChangeSub?.unsubscribe();
+    // this.loginStatusChangeSub?.unsubscribe();
   }
 }
