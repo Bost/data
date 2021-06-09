@@ -7,7 +7,8 @@ define('DB_USER', '');
 define('DB_PASS', '');
 
 header("Access-Control-Allow-Methods: GET,POST");
-header("Access-Control-Allow-Headers:*");
+header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Origin: *");
 
 function connect()
 {
