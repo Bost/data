@@ -1,10 +1,6 @@
-let fname = 'resources/Vereinsinformationen_öffentlich_Stadtteilkarte.ods'
+import * as XLSX from 'xlsx'
 
-// let XLSX: { readFile: (arg0: string) => any; }
-var XLSX
-if (typeof require !== 'undefined') {
-    XLSX = require('xlsx');
-}
+let fname = './../../../../../../data/resources/Vereinsinformationen_öffentlich_Stadtteilkarte.ods'
 let workbook = XLSX.readFile(fname)
 var worksheet = workbook.Sheets[0];
 
@@ -26,7 +22,7 @@ function sheet0() {
 
 function getRowCount(sheet) {
     var firstSheet = workbook.SheetNames[0]
-    var rows = XLSX.utils.sheet_to_row_object_array(sheet)
+    var rows = XLSX.utils.sheet_to_json(sheet)
     return rows.length
 }
 
@@ -102,6 +98,7 @@ function cleanup(a) {
     // else {
     //     return s
     // }
+    return null;
 }
 
 export interface IHash {
