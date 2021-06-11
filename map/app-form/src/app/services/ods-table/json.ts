@@ -53,15 +53,6 @@ function processTableRowAngular(requestFormat, row) {
             }
             // TODO better parsing of the address-field is needed
             // any undefined addressLine is pruned from the JSON object
-            obj = {
-                "addressLine1?": addrLines[0],
-                "addressLine2?": addrLines[1],
-                "addressLine3?": addrLines[2],
-                "street?": addrLines[0],
-                "postcode?": postcode,
-                "city?": city,
-                "country?": "",
-            }
             const __address : Address = {
                 addressLine1 : addrLines[0],
                 addressLine2 : addrLines[1],
@@ -77,147 +68,81 @@ function processTableRowAngular(requestFormat, row) {
         let jsonAddress : JSON = <JSON> obj
 
         const lat_lon = coordinates.split(/\s+/).map(parseFloat)
-        obj = {
-            "lat": lat_lon[0],
-            "lng": lat_lon[1],
-        }
         const _latlng : LatLng = {
             lat : lat_lon[0],
             lng : lat_lon[1],
         }
 
-        let jsonLatLng : JSON = <JSON> obj
-
-        let arrContacts = new Array()
-        let _contact : Contact
-
+        const contactId : string = uuidv4()
+        const associationId : string = uuidv4()
+        let arrContact : Contact[] = new Array()
         if (contact) {
             // we'got just 1 contact
-            let jsonContact : JSON
-            // console.log("contact: " + contact)
             // TODO better parsing of the contact-field is needed
             let contactDetails = contact.split(/\n/)
-            obj = {
-                "id?": "",
-                "name?": "",
-                "mail?": contactDetails[1],
-                "phone?": contactDetails[0],
-                "fax?": "",
-                "associationId?": "",
-            }
-            jsonContact = <JSON> obj
-            arrContacts.push(jsonContact)
 
-            const __contact : Contact = {
-                id : '',
+            const _contact : Contact = {
+                id : contactId,
                 name : '',
                 mail : contactDetails[1],
                 phone : contactDetails[0],
                 fax : '',
-                associationId : '',
+                associationId : associationId,
             }
-            _contact = __contact
-            // console.log(_contact)
+            console.log(_contact)
+            arrContact.push(_contact)
         }
 
-        let arrLinks = new Array()
+        let arrLink : Link[] = new Array()
         if (links) {
             let linkList = links.split(/\s+/)
             for (var i = 0; i < linkList.length; i++) {
                 var url = linkList[i]
-                obj = {
-                    "id?": "",
-                    "linkText?": "",
-                    "url": url,
-                    "associationId?": "",
-                }
-                let jsonLink : JSON = <JSON> obj
-                arrLinks.push(jsonLink)
-
                 const _link : Link = {
-                    id : '',
+                    id : uuidv4(),
                     linkText : '',
                     url : url,
-                    associationId : '',
+                    associationId : associationId,
                 }
+                arrLink.push(_link)
             }
         }
 
-        let arrSocialMedias = new Array()
+        let arrSocialMediaLink : SocialMediaLink[] = new Array()
         {
             // TODO for the social media classification see `encodeLine`
-            obj = {
-                "id?": "",
-                "linkText?": "",
-                "url": "",
-                "associationId?": "",
-            }
-            const _link : Link = {
+            const _socialMediaLink : SocialMediaLink = {
+                platform : SocialMediaPlatform.FACEBOOK,
                 id : '',
                 linkText : '',
                 url : url,
                 associationId : '',
             }
-
-            let jsonLink : JSON = <JSON> obj
-            // export enum SocialMediaPlatform {
-            //     FACEBOOK = 'Facebook',
-            //     INSTAGRAM = 'Instagram',
-            //     TWITTER = 'Twitter',
-            //     PINTEREST = 'Pinterest',
-            //     SNAPCHAT = 'Snapchat',
-            //     LINKEDIN = 'LinkedIn',
-            //     WHATSAPP = 'WhatsApp',
-            //     YOUTUBE = 'YouTube',
-            //     OTHER = 'Other'
-            // }
-            let SocialMediaPlatform = 'Facebook'
-            obj = {
-                "platform?": SocialMediaPlatform,
-            }
-            let jsonSocialMediaLinkBase : JSON = <JSON> obj
-            // const socialMediaLinkBase : SocialMediaLinkBase
-            // socialMediaLinkBase.platform? = SocialMediaPlatform
-
-            // extends Link
-            let jsonSocialMediaLink = { ...jsonLink, ...jsonSocialMediaLinkBase}
-            arrSocialMedias.push(jsonSocialMediaLink)
-
-            // const socialMediaLink : SocialMediaLink
-            // socialMediaLink.link = link
-            // socialMediaLink.socialMediaLinkBase = SocialMediaLinkBase
+            arrSocialMediaLink.push(_socialMediaLink)
         }
 
-        obj = {
-            "format?": 'plain', // 'plain' | 'html'
-            "text": "",
-        }
-        let jsonTextBlock : JSON = <JSON> obj
-        const _textBlock : TextBlock = {
+        const _activities : TextBlock = {
             format : 'plain', // 'plain' | 'html'
-            text : '',
+            text : activity,
         }
 
-        let arrImages = new Array()
+        const _goals : TextBlock = {
+            format : 'plain', // 'plain' | 'html'
+            text : goal,
+        }
+
+        let arrImages : Image[] = new Array()
         if (logos) {
             let logoList = logos.split(/\s+/)
             for (var i = 0; i < logoList.length; i++) {
                 var url = logoList[i]
-                obj = {
-                    "id?": "",
-                    "url": url,
-                    "altText?": "",
-                    "associationId?": "",
-                }
-                let jsonImage : JSON = <JSON> obj
-                arrImages.push(jsonImage)
-
                 const _image : Image = {
                     id : '',
                     url : url,
                     altText : '',
                     associationId : '',
                 }
+                arrImages.push(_image)
             }
         }
 
@@ -230,42 +155,22 @@ function processTableRowAngular(requestFormat, row) {
             districtList = cityDistrict.split(/, /)
         }
 
-        obj = {
-            "id": "",
-            "name": name,
-            "shortName?": undefined,
-            "goals?": jsonTextBlock,
-            "activities?": jsonTextBlock,
-            "contacts?": arrContacts,
-            "links?": arrLinks,
-            "socialMedia?": arrSocialMedias,
-            "images?": arrImages,
-            "activityList?": activityList,
-            "districtList?": districtList,
-        }
-        // extends Address, LatLng
-        let jsonAssociation : JSON = <JSON> obj
         const _association : Association = {
-            // id : '',
-            id: uuidv4(),
+            id: associationId,
             name : name,
             lat : _latlng.lat,
             lng : _latlng.lng,
-            contacts : [_contact],
-
             // shortName : undefined,
-            // goals : _textBlock,
-            // activities : _textBlock,
-            // contacts : arrContacts,
-            // links : arrLinks,
-            // socialMedia : arrSocialMedias,
-            // images : arrImages,
-            // activityList : activityList,
-            // districtList : districtList,
+            goals : _goals,
+            activities : _activities,
+            contacts : arrContact,
+            links : arrLink,
+            socialMedia : arrSocialMediaLink,
+            images : arrImages,
+            activityList : activityList,
+            districtList : districtList,
         }
 
-        // return { ...jsonAssociation, ...jsonAddress, ...jsonLatLng }
-        // return {...jsonLatLng}
         return _association
     }
     else {
