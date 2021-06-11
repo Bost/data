@@ -1,27 +1,11 @@
 import * as XLSX from 'xlsx'
 
-let fname = './../../../../../../data/resources/Vereinsinformationen_öffentlich_Stadtteilkarte.ods'
-let workbook = XLSX.readFile(fname)
-var worksheet = workbook.Sheets[0];
-
 function columnIdx (rowLetter) {
     // {:pre [(char? rowLetter)]} // TODO define contract
     return rowLetter
 }
 
-let documentData = workbook
-function document_() {
-    return documentData
-}
-
-function sheet0() {
-    var first_sheet_name = workbook.SheetNames[0];
-    var worksheet = workbook.Sheets[first_sheet_name];
-    return worksheet
-}
-
 function getRowCount(sheet) {
-    var firstSheet = workbook.SheetNames[0]
     var rows = XLSX.utils.sheet_to_json(sheet)
     return rows.length
 }
@@ -59,10 +43,10 @@ function rowNr(idx) {
 
 export function replaceAll(s: string, match: string, replacement: string): string {
     // https://www.designcise.com/web/tutorial/how-to-replace-all-occurrences-of-a-word-in-a-javascript-string
-    if (s)
-        return s.replace(new RegExp(match, 'g'), replacement)
-    else
-        return s
+    if (s) {
+        s = s.replace(new RegExp(match, 'g'), replacement)
+    }
+    return s
 }
 
 // function composition
@@ -286,44 +270,43 @@ function calcActivities(sheet) {
 }
 
 export const _desc = 'desc'
-export function calcReadTable() {
-    var s0 = sheet0()
+export function calcReadTable(sheet) {
+  const s0 = sheet
+  var associations = calcAssociations(s0)
+  var addresses    = calcAddresses(s0)
+  var districts    = calcDistricts(s0)
+  var contacts     = calcContacts(s0)
+  var webPages     = calcWebPages(s0)
+  var goals        = calcGoals(s0)
+  var activities   = calcActivities(s0)
+  var coordinates  = calcCoordinates(s0)
+  var logos        = calcLogos(s0)
 
-    var associations = calcAssociations(s0)
-    var addresses    = calcAddresses(s0)
-    var districts    = calcDistricts(s0)
-    var contacts     = calcContacts(s0)
-    var webPages     = calcWebPages(s0)
-    var goals        = calcGoals(s0)
-    var activities   = calcActivities(s0)
-    var coordinates  = calcCoordinates(s0)
-    var logos        = calcLogos(s0)
+  let mm = new Array()
 
-    let mm = new Array()
+  // poor man's merge
+  for (var y in associations) {
+    // console.log(
+    //         'y: ' + y +
+    //         '; _idx: ' + associations[y][_idx] +
+    //         '; _name: ' + associations[y][_name] +
+    //         '; _address: '+addresses[y][_address]
+    // )
 
-    // poor man's merge
-    for (var y in associations) {
-        // console.log(
-        //         'y: ' + y +
-        //         '; _idx: ' + associations[y][_idx] +
-        //         '; _name: ' + associations[y][_name] +
-        //         '; _address: '+addresses[y][_address]
-        // )
-
-        let m: IHash = {};
-        m[y]             = y
-        m[_idx]          = associations[y][_idx]
-        m[_name]         = associations[y][_name]
-        m[_address]      = addresses[y][_address]
-        m[_cityDistrict] = districts[y][_cityDistrict]
-        m[_desc]         = (contacts[y][_contact] + "\n\n" + webPages[y][_webPage]).trim()
-        m[_coordinates]  = coordinates[y][_coordinates]
-        m[_contact]      = contacts[y][_contact]
-        m[_logo]         = logos[y][_logo]
-        m[_webPage]      = webPages[y][_webPage]
-        m[_goal]         = goals[y][_goal]
-        m[_activity]     = activities[y][_activity]
-        mm.push(m)
-    }
-    return mm
+    let m: IHash = {};
+    m[y]             = y
+    m[_idx]          = associations[y][_idx]
+    m[_name]         = associations[y][_name]
+    m[_address]      = addresses[y][_address]
+    m[_cityDistrict] = districts[y][_cityDistrict]
+    m[_desc]         = (contacts[y][_contact] + "\n\n" + webPages[y][_webPage]).trim()
+    m[_coordinates]  = coordinates[y][_coordinates]
+    m[_contact]      = contacts[y][_contact]
+    m[_logo]         = logos[y][_logo]
+    m[_webPage]      = webPages[y][_webPage]
+    m[_goal]         = goals[y][_goal]
+    m[_activity]     = activities[y][_activity]
+    mm.push(m)
+  }
+  return mm
 }

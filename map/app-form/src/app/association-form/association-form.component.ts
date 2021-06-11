@@ -3,6 +3,7 @@ import {Association} from '../model/association';
 import {MyHttpResponse} from '../model/http-response';
 import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
 import {MysqlQueryService} from '../services/mysql-query.service';
+import {MysqlPersistService} from '../services/mysql-persist.service';
 import {AssociationEditFormComponent} from './association-edit-form/association-edit-form.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -43,6 +44,7 @@ export class AssociationFormComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private mySqlQueryService: MysqlQueryService,
+              private mySqlPersistService: MysqlPersistService,
               private confirmationService: ConfirmationService,
               private router: Router,
               private route: ActivatedRoute,
@@ -94,6 +96,13 @@ export class AssociationFormComponent implements OnInit, OnDestroy {
         }
       },
       {
+        label: 'Daten importieren',
+        icon: 'pi pi-upload',
+        command: async () => {
+          await this.uploadData();
+        }
+      },
+      {
         label: 'Schlagwörter bearbeiten',
         icon: 'pi pi-tags',
         items: [
@@ -122,6 +131,8 @@ export class AssociationFormComponent implements OnInit, OnDestroy {
       // }
     ];
   }
+
+  uploadedFiles: any[] = [];
 
   async ngOnInit(): Promise<void> {
     await this.init();
@@ -326,6 +337,29 @@ export class AssociationFormComponent implements OnInit, OnDestroy {
 
   async export(): Promise<void> {
     await this.exportImportService.exportAssociations(this.associations, this.districtOptions, this.activitiesOptions);
+  }
+
+  async uploadData(): Promise<void> {
+    console.log("this.uploadedFiles.length: "+this.uploadedFiles.length)
+    // await this.mySqlPersistService.importGoogleTable().toPromise()
+    //   .then(() => {
+    //     // this.emitBlockUi(false);
+    //     this.messageService.add({
+    //       severity: 'success',
+    //       summary: 'Import erfolgreicht.',
+    //       key: 'editFormToast'  // ???
+    //     });
+    //     // this.reload.emit({id: this.associationForm.value.id, showDialog: false});
+    //   })
+    //   .catch((reason) => {
+    //     // this.emitBlockUi(false);
+    //     this.messageService.add({
+    //       severity: 'error',
+    //       summary: 'Import fehlgeschlagen.',
+    //       detail: JSON.stringify(reason),
+    //       key: 'editFormToast' // ???
+    //     });
+    //   });
   }
 
   ngOnDestroy(): void {

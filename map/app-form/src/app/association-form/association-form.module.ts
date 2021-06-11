@@ -17,6 +17,7 @@ import {RouterModule} from '@angular/router';
 import {MenubarModule} from 'primeng/menubar';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {FileUploadModule} from 'primeng/fileupload';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
     MenubarModule,
     CheckboxModule,
     InputSwitchModule
+    ,FileUploadModule
   ]
 })
 export class AssociationFormModule {

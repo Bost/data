@@ -16,6 +16,7 @@ import {BlockUIModule} from 'primeng/blockui';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ToastModule} from 'primeng/toast';
 import {FocusTrapModule} from 'primeng/focustrap';
+import {FileUploadModule} from 'primeng/fileupload';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {FocusTrapModule} from 'primeng/focustrap';
         ProgressSpinnerModule,
         ToastModule,
         FocusTrapModule
+       ,FileUploadModule
     ],
   bootstrap: [AppComponent],
   providers: [

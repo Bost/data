@@ -13,6 +13,14 @@
   </div>
 
   <form [formGroup]="associationForm">
+    Custom
+    <p-fileUpload
+      #fileUpload
+      name="myfile[]"
+      customUpload="true"
+      (uploadHandler)="myUploader($event)"
+    ></p-fileUpload>
+
     <div class="row">
       <div class="col-12">
 

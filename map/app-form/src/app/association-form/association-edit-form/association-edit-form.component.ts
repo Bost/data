@@ -11,6 +11,11 @@ import {BehaviorSubject, Subscription} from 'rxjs';
 import {InputSwitch} from 'primeng/inputswitch';
 // import {LoginService} from '../../login/login.service';
 
+// import * as o from './ods-table/ods'
+// import * as g from './ods-table/geo'
+import {getAssociations} from './../../services/ods-table/json'
+import * as XLSX from 'xlsx'
+
 function contactFilledValidator(): ValidatorFn {
   return (control: FormGroup): { [key: string]: boolean } | null => {
     if (!control.value.name && !control.value.phone && !control.value.fax && !control.value.mail) {
@@ -93,6 +98,8 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
   activitiesOptions: DropdownOption[] = [];
 
   isPublicAddress = false;
+
+  uploadedFiles: any[] = [];
 
   get showPreview(): boolean {
     return localStorage.getItem('show-preview') === 'true';
@@ -305,6 +312,51 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
     });
 
     this.emitBlockUi(false);
+  }
+
+  myUploader(event) {
+      for(let file of event.files) {
+          // console.log("myUploader file: "+file)
+          this.uploadedFiles.push(file)
+          const reader: FileReader = new FileReader()
+          const bs = reader.readAsBinaryString(file)
+          reader.onload = (e) => {
+              const binaryResult = reader.result
+              const wb: XLSX.WorkBook = XLSX.read(binaryResult, { type: 'binary' })
+
+              const wsname: string = wb.SheetNames[0]
+              const ws: XLSX.WorkSheet = wb.Sheets[wsname]
+
+              // const data = XLSX.utils.sheet_to_json(ws) // to get 2d array pass 2nd parameter as object {header: 1}
+              // console.log(data) // Data will be logged in array format containing objects
+              const assocs : Association[] = getAssociations(ws)
+              console.log("assocs.length: " + assocs.length)
+
+              for(let a of assocs) {
+                  console.log(a)
+                  this.mySqlPersistService.createOrUpdateAssociation(a).toPromise()
+                      .then(() => {
+                          this.emitBlockUi(false);
+                          this.messageService.add({
+                              severity: 'success',
+                              summary: 'Verein wurde gespeichert.',
+                              key: 'editFormToast'
+                          });
+                          this.reload.emit({id: this.associationForm.value.id, showDialog: false});
+                      })
+                      .catch((reason) => {
+                          this.emitBlockUi(false);
+                          this.messageService.add({
+                              severity: 'error',
+                              summary: 'Verein konnte nicht gespeichert werden.',
+                              detail: JSON.stringify(reason),
+                              key: 'editFormToast'
+                          });
+                      });
+                  // break
+              }
+          }
+      }
   }
 
   requestChangePublicAddress(val: boolean): void {

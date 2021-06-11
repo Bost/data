@@ -15,7 +15,18 @@ export class MysqlPersistService {
   constructor(private httpClient: HttpClient) {
   }
 
+  // importGoogleTable(): Observable<MyHttpResponse<any>> {
+  //   let fname = './../../../../../../data/resources/Vereinsinformationen_öffentlich_Stadtteilkarte.ods'
+  //   const jsonStr = j.go(fname);
+  //   // console.log(fout + " containing "+ jsonObject.length + " elements created")
+  //   var association: Association;
+  //   // console.log("association:\n"+association)
+  //   return this.httpClient.post<MyHttpResponse<any>>(`${this.PHP_API_SERVER_PATH}/associations/create-association.php`, association)
+  //     .pipe(catchError(this.handleError));
+  // }
+
   createOrUpdateAssociation(association: Association): Observable<MyHttpResponse<any>> {
+      console.log(association)
     return this.httpClient.post<MyHttpResponse<any>>(`${this.PHP_API_SERVER_PATH}/associations/create-association.php`, association)
       .pipe(catchError(this.handleError));
   }

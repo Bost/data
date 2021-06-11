@@ -1,63 +1,8 @@
 import * as o from './ods'
 import * as g from './geo'
-
-function processTableRowUmap(requestFormat, row) {
-    const address      = row[o._address]
-    const cityDistrict = row[o._cityDistrict]
-    const name         = row[o._name]
-    const desc         = row[o._desc]
-    const goal         = row[o._goal]
-    const activity     = row[o._activity]
-    const coordinates  = row[o._coordinates]
-    const logos        = row[o._logo]
-    const normAddr     = g.normalizeAddress(address)
-    const descMarkdown = desc.split(/\s+/).map(g.encodeLine)
-
-    let logosMarkdown = ""
-    if (logos) {
-        let arrMarkdown = logos.split(/\s+/).map((s) => {
-            return "{{" + s + "}}\n"
-        })
-        logosMarkdown = arrMarkdown.concat()
-        // console.log("arrMarkdown.concat(): " + arrMarkdown.concat())
-    }
-    else {
-        console.log("logos " + logos + "; " + name)
-    }
-    // let allFeatures
-    if (coordinates) {
-        // console.log('coordinates : '+ coordinates)
-        let obj: any =
-            [{
-                "type": "Feature",
-                "properties": {
-                    "geocoding": { "name": "" },
-                    "description": logosMarkdown +
-                        address + "\n\n" +
-                        descMarkdown + "\n\n" +
-                        "Aktiv in Stadtteil(en): " + cityDistrict + "\n\n"+
-                        "Ziele des Vereins: " + goal + "\n\n"+
-                        "Aktivitätsbereiche: " + activity,
-
-                    "search_address": normAddr,
-                    "search_district": cityDistrict,
-                    "search_desc": desc,
-                    "search_goal": goal,
-                    "search_activity": activity,
-                    "name" : name
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": coordinates.split(/\s+/)
-                    // (read-string (format "[%s]" coordinates))
-                }}]
-        let allFeatures: JSON = <JSON> obj
-        return allFeatures
-    }
-    else {
-        console.log(name + ": TODO talk to the Nominatim address resolver API")
-    }
-}
+import {Address, LatLng, Association, Contact, Link, SocialMediaLink, TextBlock, SocialMediaPlatform, Image}
+       from '../../model/association';
+import {v4 as uuidv4} from 'uuid';
 
 function processTableRowAngular(requestFormat, row) {
     const address      = row[o._address]
@@ -95,10 +40,11 @@ function processTableRowAngular(requestFormat, row) {
         }
 
         // See association.ts
+        let _address : Address
         let obj : any
         {
-            let postcode : String  // TODO is postcode a string or integer?
-            let city : String
+            let postcode : string // TODO is postcode a string or integer?
+            let city : string
             let postcode_city = addrLines[1]
             if (postcode_city) {
                 let postcode_city_split = postcode_city.split(/\s+/)
@@ -116,20 +62,38 @@ function processTableRowAngular(requestFormat, row) {
                 "city?": city,
                 "country?": "",
             }
+            const __address : Address = {
+                addressLine1 : addrLines[0],
+                addressLine2 : addrLines[1],
+                addressLine3 : addrLines[2],
+                street : addrLines[0],
+                postcode : postcode,
+                city : city,
+                country : '',
+            }
+            _address = __address
         }
-        let Address : JSON = <JSON> obj
+
+        let jsonAddress : JSON = <JSON> obj
 
         const lat_lon = coordinates.split(/\s+/).map(parseFloat)
         obj = {
             "lat": lat_lon[0],
             "lng": lat_lon[1],
         }
-        let LatLng : JSON = <JSON> obj
+        const _latlng : LatLng = {
+            lat : lat_lon[0],
+            lng : lat_lon[1],
+        }
+
+        let jsonLatLng : JSON = <JSON> obj
 
         let arrContacts = new Array()
+        let _contact : Contact
+
         if (contact) {
             // we'got just 1 contact
-            let Contact : JSON
+            let jsonContact : JSON
             // console.log("contact: " + contact)
             // TODO better parsing of the contact-field is needed
             let contactDetails = contact.split(/\n/)
@@ -141,8 +105,19 @@ function processTableRowAngular(requestFormat, row) {
                 "fax?": "",
                 "associationId?": "",
             }
-            Contact = <JSON> obj
-            arrContacts.push(Contact)
+            jsonContact = <JSON> obj
+            arrContacts.push(jsonContact)
+
+            const __contact : Contact = {
+                id : '',
+                name : '',
+                mail : contactDetails[1],
+                phone : contactDetails[0],
+                fax : '',
+                associationId : '',
+            }
+            _contact = __contact
+            // console.log(_contact)
         }
 
         let arrLinks = new Array()
@@ -156,8 +131,15 @@ function processTableRowAngular(requestFormat, row) {
                     "url": url,
                     "associationId?": "",
                 }
-                let Link : JSON = <JSON> obj
-                arrLinks.push(Link)
+                let jsonLink : JSON = <JSON> obj
+                arrLinks.push(jsonLink)
+
+                const _link : Link = {
+                    id : '',
+                    linkText : '',
+                    url : url,
+                    associationId : '',
+                }
             }
         }
 
@@ -170,7 +152,14 @@ function processTableRowAngular(requestFormat, row) {
                 "url": "",
                 "associationId?": "",
             }
-            let Link : JSON = <JSON> obj
+            const _link : Link = {
+                id : '',
+                linkText : '',
+                url : url,
+                associationId : '',
+            }
+
+            let jsonLink : JSON = <JSON> obj
             // export enum SocialMediaPlatform {
             //     FACEBOOK = 'Facebook',
             //     INSTAGRAM = 'Instagram',
@@ -186,17 +175,28 @@ function processTableRowAngular(requestFormat, row) {
             obj = {
                 "platform?": SocialMediaPlatform,
             }
-            let SocialMediaLinkBase : JSON = <JSON> obj
+            let jsonSocialMediaLinkBase : JSON = <JSON> obj
+            // const socialMediaLinkBase : SocialMediaLinkBase
+            // socialMediaLinkBase.platform? = SocialMediaPlatform
+
             // extends Link
-            let SocialMediaLink = { ...Link, ...SocialMediaLinkBase}
-            arrSocialMedias.push(SocialMediaLink)
+            let jsonSocialMediaLink = { ...jsonLink, ...jsonSocialMediaLinkBase}
+            arrSocialMedias.push(jsonSocialMediaLink)
+
+            // const socialMediaLink : SocialMediaLink
+            // socialMediaLink.link = link
+            // socialMediaLink.socialMediaLinkBase = SocialMediaLinkBase
         }
 
         obj = {
             "format?": 'plain', // 'plain' | 'html'
             "text": "",
         }
-        let TextBlock : JSON = <JSON> obj
+        let jsonTextBlock : JSON = <JSON> obj
+        const _textBlock : TextBlock = {
+            format : 'plain', // 'plain' | 'html'
+            text : '',
+        }
 
         let arrImages = new Array()
         if (logos) {
@@ -209,8 +209,15 @@ function processTableRowAngular(requestFormat, row) {
                     "altText?": "",
                     "associationId?": "",
                 }
-                let Image : JSON = <JSON> obj
-                arrImages.push(Image)
+                let jsonImage : JSON = <JSON> obj
+                arrImages.push(jsonImage)
+
+                const _image : Image = {
+                    id : '',
+                    url : url,
+                    altText : '',
+                    associationId : '',
+                }
             }
         }
 
@@ -227,8 +234,8 @@ function processTableRowAngular(requestFormat, row) {
             "id": "",
             "name": name,
             "shortName?": undefined,
-            "goals?": TextBlock,
-            "activities?": TextBlock,
+            "goals?": jsonTextBlock,
+            "activities?": jsonTextBlock,
             "contacts?": arrContacts,
             "links?": arrLinks,
             "socialMedia?": arrSocialMedias,
@@ -237,10 +244,29 @@ function processTableRowAngular(requestFormat, row) {
             "districtList?": districtList,
         }
         // extends Address, LatLng
-        let Association : JSON = <JSON> obj
+        let jsonAssociation : JSON = <JSON> obj
+        const _association : Association = {
+            // id : '',
+            id: uuidv4(),
+            name : name,
+            lat : _latlng.lat,
+            lng : _latlng.lng,
+            contacts : [_contact],
 
-        return { ...Association, ...Address, ...LatLng }
-        // return {...LatLng}
+            // shortName : undefined,
+            // goals : _textBlock,
+            // activities : _textBlock,
+            // contacts : arrContacts,
+            // links : arrLinks,
+            // socialMedia : arrSocialMedias,
+            // images : arrImages,
+            // activityList : activityList,
+            // districtList : districtList,
+        }
+
+        // return { ...jsonAssociation, ...jsonAddress, ...jsonLatLng }
+        // return {...jsonLatLng}
+        return _association
     }
     else {
         console.log(name + ": TODO talk to the Nominatim address resolver API")
@@ -264,17 +290,9 @@ function isNotEmpty(value) {
     return Object.keys(value).length !== 0
 }
 
-let fs = require("fs")
-let odsTable = o.calcReadTable()
-let jsonObjectFull = calcGeoData(odsTable)
-// remove empty elements
-let jsonObject = jsonObjectFull.filter(isNotEmpty)
-
-const fout = "./out.umap"
-fs.writeFile(fout, JSON.stringify(jsonObject, null, 4), (err) => {
-    if (err) {
-        console.error(err)
-        return
-    }
-    console.log(fout + " containing "+ jsonObject.length + " elements created")
-})
+export function getAssociations(fname) : Association[] {
+    const odsTable = o.calcReadTable(fname)
+    // TODO remove empty elements
+    // const jsonObject = jsonObjectFull.filter(isNotEmpty)
+    return calcGeoData(odsTable)
+  }
