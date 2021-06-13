@@ -1,17 +1,18 @@
 import * as o from './ods'
 import * as g from './geo'
 import {Address, LatLng, Association, Contact, Link, SocialMediaLink, TextBlock, SocialMediaPlatform, Image}
-       from '../../model/association';
-import {v4 as uuidv4} from 'uuid';
+       from '../../model/association'
+import {v4 as uuidv4} from 'uuid'
 
 function processTableRowAngular(requestFormat, row) {
     const address      = row[o._address]
+    const addr_recv    = row[o._addr_recv]
     const contact      = row[o._contact]
     const cityDistrict = row[o._cityDistrict]
     const name         = row[o._name]
     const desc         = row[o._desc]
-    const goal         = row[o._goal]
-    const activity     = row[o._activity]
+    const goal         = escape(row[o._goal])
+    const activity     = escape(row[o._activity])
     const coordinates  = row[o._coordinates]
     const logos        = row[o._logo]
     const links        = row[o._webPage]
@@ -65,16 +66,14 @@ function processTableRowAngular(requestFormat, row) {
             _address = __address
         }
 
-        let jsonAddress : JSON = <JSON> obj
-
         const lat_lon = coordinates.split(/\s+/).map(parseFloat)
         const _latlng : LatLng = {
             lat : lat_lon[0],
             lng : lat_lon[1],
         }
 
-        const contactId : string = uuidv4()
         const associationId : string = uuidv4()
+        const contactId : string = uuidv4()
         let arrContact : Contact[] = new Array()
         if (contact) {
             // we'got just 1 contact
@@ -89,7 +88,6 @@ function processTableRowAngular(requestFormat, row) {
                 fax : '',
                 associationId : associationId,
             }
-            console.log(_contact)
             arrContact.push(_contact)
         }
 
@@ -113,10 +111,10 @@ function processTableRowAngular(requestFormat, row) {
             // TODO for the social media classification see `encodeLine`
             const _socialMediaLink : SocialMediaLink = {
                 platform : SocialMediaPlatform.FACEBOOK,
-                id : '',
+                id : uuidv4(),
                 linkText : '',
                 url : url,
-                associationId : '',
+                associationId : associationId,
             }
             arrSocialMediaLink.push(_socialMediaLink)
         }
@@ -137,10 +135,10 @@ function processTableRowAngular(requestFormat, row) {
             for (var i = 0; i < logoList.length; i++) {
                 var url = logoList[i]
                 const _image : Image = {
-                    id : '',
+                    id : uuidv4(),
                     url : url,
                     altText : '',
-                    associationId : '',
+                    associationId : associationId,
                 }
                 arrImages.push(_image)
             }
@@ -158,9 +156,7 @@ function processTableRowAngular(requestFormat, row) {
         const _association : Association = {
             id: associationId,
             name : name,
-            lat : _latlng.lat,
-            lng : _latlng.lng,
-            // shortName : undefined,
+            // shortName : addr_recv,
             goals : _goals,
             activities : _activities,
             contacts : arrContact,
@@ -169,8 +165,18 @@ function processTableRowAngular(requestFormat, row) {
             images : arrImages,
             activityList : activityList,
             districtList : districtList,
-        }
 
+            addressLine1 : _address.addressLine1,
+            addressLine2 : _address.addressLine2,
+            addressLine3 : _address.addressLine3,
+            street : _address.street,
+            postcode : _address.postcode,
+            city : _address.city,
+            country : _address.country,
+
+            lat : _latlng.lat,
+            lng : _latlng.lng,
+        }
         return _association
     }
     else {
@@ -200,4 +206,4 @@ export function getAssociations(fname) : Association[] {
     // TODO remove empty elements
     // const jsonObject = jsonObjectFull.filter(isNotEmpty)
     return calcGeoData(odsTable)
-  }
+}

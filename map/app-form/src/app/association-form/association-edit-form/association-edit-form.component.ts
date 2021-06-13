@@ -333,27 +333,26 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
               console.log("assocs.length: " + assocs.length)
 
               for(let a of assocs) {
-                  console.log(a)
                   this.mySqlPersistService.createOrUpdateAssociation(a).toPromise()
                       .then(() => {
                           this.emitBlockUi(false);
                           this.messageService.add({
                               severity: 'success',
-                              summary: 'Verein wurde gespeichert.',
+                              summary: a.name + ' gespeichert.',
                               key: 'editFormToast'
                           });
+                          // console.log("Saved: "+a.name)
                           this.reload.emit({id: this.associationForm.value.id, showDialog: false});
                       })
                       .catch((reason) => {
                           this.emitBlockUi(false);
                           this.messageService.add({
                               severity: 'error',
-                              summary: 'Verein konnte nicht gespeichert werden.',
+                              summary: a.name + ' konnte nicht gespeichert werden.',
                               detail: JSON.stringify(reason),
                               key: 'editFormToast'
                           });
                       });
-                  // break
               }
           }
       }

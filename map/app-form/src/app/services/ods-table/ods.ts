@@ -37,6 +37,10 @@ function address(sheet, row) {
     return textAtPosition(sheet, columnIdx('C'), row)
 }
 
+function address_receiver(sheet, row) {
+    return textAtPosition(sheet, columnIdx('B'), row)
+}
+
 function rowNr(idx) {
     return idx + 2
 }
@@ -105,6 +109,22 @@ function calcAddresses(sheet) {
         let hm: IHash = {};
         hm[_idx] = rowNr(i)
         hm[_address] = s
+        return hm
+    })
+}
+
+export const _addr_recv ='_addr_recv'
+function calcAddressReceiver(sheet) {
+    const f1 = (a: string) => replaceAll(a, '\n', ', ')
+    const f2 = cleanup
+    const f3 = (row: number) => address_receiver(sheet, row)
+    const pipedFunction = pipe(f3, f2, f1)
+
+    var vals = sheetRows(sheet).map(pipedFunction)
+    return vals.map((s, i) => {
+        let hm: IHash = {};
+        hm[_idx] = rowNr(i)
+        hm[_addr_recv] = s
         return hm
     })
 }
@@ -274,6 +294,7 @@ export function calcReadTable(sheet) {
   const s0 = sheet
   var associations = calcAssociations(s0)
   var addresses    = calcAddresses(s0)
+  var addr_recv    = calcAddressReceiver(s0)
   var districts    = calcDistricts(s0)
   var contacts     = calcContacts(s0)
   var webPages     = calcWebPages(s0)
@@ -298,6 +319,7 @@ export function calcReadTable(sheet) {
     m[_idx]          = associations[y][_idx]
     m[_name]         = associations[y][_name]
     m[_address]      = addresses[y][_address]
+    m[_addr_recv]    = addr_recv[y][_addr_recv]
     m[_cityDistrict] = districts[y][_cityDistrict]
     m[_desc]         = (contacts[y][_contact] + "\n\n" + webPages[y][_webPage]).trim()
     m[_coordinates]  = coordinates[y][_coordinates]

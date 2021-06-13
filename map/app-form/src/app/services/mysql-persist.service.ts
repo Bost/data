@@ -26,7 +26,6 @@ export class MysqlPersistService {
   // }
 
   createOrUpdateAssociation(association: Association): Observable<MyHttpResponse<any>> {
-      console.log(association)
     return this.httpClient.post<MyHttpResponse<any>>(`${this.PHP_API_SERVER_PATH}/associations/create-association.php`, association)
       .pipe(catchError(this.handleError));
   }
