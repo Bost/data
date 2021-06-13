@@ -68,8 +68,8 @@ function processTableRowAngular(requestFormat, row) {
 
         const lat_lon = coordinates.split(/\s+/).map(parseFloat)
         const _latlng : LatLng = {
-            lat : lat_lon[0],
-            lng : lat_lon[1],
+            lat : lat_lon[1],
+            lng : lat_lon[0],
         }
 
         const associationId : string = uuidv4()
