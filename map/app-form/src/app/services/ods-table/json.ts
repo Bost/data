@@ -4,6 +4,25 @@ import {Address, LatLng, Association, Contact, Link, SocialMediaLink, TextBlock,
        from '../../model/association'
 import {v4 as uuidv4} from 'uuid'
 
+// Thanks to https://stackoverflow.com/a/6234804
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+    // TODO clarify newlines in the goals and activities
+        .replace(/\n/g, "<br/>")
+}
+
+function escapeHtmlWithNull(unsafe) {
+    if (unsafe)
+        return escapeHtml(unsafe)
+    else
+        return ""
+}
+
 function processTableRowAngular(requestFormat, row) {
     const address      = row[o._address]
     const addr_recv    = row[o._addr_recv]
@@ -11,8 +30,8 @@ function processTableRowAngular(requestFormat, row) {
     const cityDistrict = row[o._cityDistrict]
     const name         = row[o._name]
     const desc         = row[o._desc]
-    const goal         = escape(row[o._goal])
-    const activity     = escape(row[o._activity])
+    const activity     = escapeHtmlWithNull(row[o._activity])
+    const goal         = escapeHtmlWithNull(row[o._goal])
     const coordinates  = row[o._coordinates]
     const logos        = row[o._logo]
     const links        = row[o._webPage]
