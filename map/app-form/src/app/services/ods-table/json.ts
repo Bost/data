@@ -36,9 +36,6 @@ function processTableRowAngular(row) : Association {
     const normAddr     = g.normalizeAddress(address)
     const descMarkdown = desc.split(/\s+/).map(g.encodeLine)
 
-    // TODO send HTTP request with this json-obj to an API service. This service
-    // inserts the data in the dbase
-
     let addrLines = []
     if (normAddr != "keine öffentliche Anschrift") {
         addrLines = normAddr.split(/, /)
@@ -46,7 +43,7 @@ function processTableRowAngular(row) : Association {
 
     let _address : Address
     {
-        let postcode : string // TODO is postcode a string or integer?
+        let postcode : string
         let city : string
         let postcode_city = addrLines[1]
         if (postcode_city) {
