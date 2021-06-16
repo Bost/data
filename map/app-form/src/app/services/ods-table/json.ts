@@ -12,15 +12,13 @@ function escapeHtml(unsafe) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;")
-    // TODO clarify newlines in the goals and activities
+    // TODO clarify newlines in the goals and activities. Also TextBlock format
+    // can be 'plain' or 'html'
         .replace(/\n/g, "<br/>")
 }
 
 function escapeHtmlWithNull(unsafe) {
-    if (unsafe)
-        return escapeHtml(unsafe)
-    else
-        return ""
+    return unsafe ? escapeHtml(unsafe) : ""
 }
 
 function processTableRowAngular(requestFormat, row) {
@@ -44,10 +42,6 @@ function processTableRowAngular(requestFormat, row) {
             return "{{" + s + "}}\n"
         })
         logosMarkdown = arrMarkdown.concat()
-        // console.log("arrMarkdown.concat(): " + arrMarkdown.concat())
-    }
-    else {
-        // console.log("logos " + logos + "; " + name)
     }
 
     // TODO send HTTP request with this json-obj to an API service. This service
@@ -59,7 +53,6 @@ function processTableRowAngular(requestFormat, row) {
             addrLines = normAddr.split(/, /)
         }
 
-        // See association.ts
         let _address : Address
         let obj : any
         {
@@ -208,10 +201,7 @@ export const _umap = '_umap'
 export const _geojson = '_geojson'
 function calcGeoData(odsTable) {
     const format = _geojson
-    // odsTable = odsTable.slice(odsTable.length - 1, odsTable.length - 0)
-    // console.log(odsTable)
     return odsTable.map((tableRow, format) => {
-        // return processTableRowUmap(format, tableRow)
         return processTableRowAngular(format, tableRow)
     })
 }
