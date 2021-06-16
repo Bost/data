@@ -51,18 +51,16 @@ function processTableRowAngular(row) : Association {
             postcode = postcode_city_split[0]
             city = postcode_city_split[1]
         }
-        // TODO better parsing of the address-field is needed
-        // any undefined addressLine is pruned from the JSON object
-        const __address : Address = {
-            addressLine1 : addrLines[0],
-            addressLine2 : addrLines[1],
-            addressLine3 : addrLines[2],
+        _address = {
+            // TODO clarify usage of addressLine[] vs street, postcode, etc.
+            // addressLine1 : addrLines[0],
+            // addressLine2 : addrLines[1],
+            // addressLine3 : addrLines[2],
             street : addrLines[0],
             postcode : postcode,
             city : city,
             country : '',
         }
-        _address = __address
     }
 
     const lat_lon = coordinates.split(/\s+/).map(parseFloat)

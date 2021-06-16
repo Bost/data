@@ -11,8 +11,6 @@ import {BehaviorSubject, Subscription} from 'rxjs';
 import {InputSwitch} from 'primeng/inputswitch';
 // import {LoginService} from '../../login/login.service';
 
-// import * as o from './ods-table/ods'
-// import * as g from './ods-table/geo'
 import {getAssociations} from './../../services/ods-table/json'
 import * as XLSX from 'xlsx'
 
@@ -316,7 +314,6 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
 
   myUploader(event) {
       for(let file of event.files) {
-          // console.log("myUploader file: "+file)
           this.uploadedFiles.push(file)
           const reader: FileReader = new FileReader()
           const bs = reader.readAsBinaryString(file)
@@ -330,7 +327,6 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
               // const data = XLSX.utils.sheet_to_json(ws) // to get 2d array pass 2nd parameter as object {header: 1}
               // console.log(data) // Data will be logged in array format containing objects
               const assocs : Association[] = getAssociations(ws)
-              console.log("assocs.length: " + assocs.length)
 
               for(let a of assocs) {
                   this.mySqlPersistService.createOrUpdateAssociation(a).toPromise()
@@ -341,7 +337,6 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
                               summary: a.name + ' gespeichert.',
                               key: 'editFormToast'
                           });
-                          // console.log("Saved: "+a.name)
                           this.reload.emit({id: this.associationForm.value.id, showDialog: false});
                       })
                       .catch((reason) => {
