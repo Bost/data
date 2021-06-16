@@ -36,32 +36,40 @@ function processTableRowAngular(row) : Association {
     const normAddr     = g.normalizeAddress(address)
     const descMarkdown = desc.split(/\s+/).map(g.encodeLine)
 
-    let addrLines = []
-    if (normAddr != "keine öffentliche Anschrift") {
-        addrLines = normAddr.split(/, /)
-    }
-
     let _address : Address
     {
         let postcode : string
         let city : string
-        let postcode_city = addrLines[1]
-        if (postcode_city) {
-            let postcode_city_split = postcode_city.split(/\s+/)
-            postcode = postcode_city_split[0]
-            city = postcode_city_split[1]
+        let street : string
+        let postcode_city : string
+        let addrLines = []
+        if (normAddr == "keine öffentliche Anschrift") {
+            addrLines.push(normAddr)
         }
+        else {
+            addrLines = normAddr.split(/, /)
+            street = addrLines[0]
+            let postcode_city = addrLines[1]
+            if (postcode_city) {
+                let postcode_city_split = postcode_city.split(/\s+/)
+                postcode = postcode_city_split[0]
+                city = postcode_city_split[1]
+            }
+            addrLines[0] = addrLines[1] = addrLines[2] = undefined
+        }
+
         _address = {
             // TODO clarify usage of addressLine[] vs street, postcode, etc.
-            // addressLine1 : addrLines[0],
-            // addressLine2 : addrLines[1],
-            // addressLine3 : addrLines[2],
-            street : addrLines[0],
+            addressLine1 : addrLines[0],
+            addressLine2 : addrLines[1],
+            addressLine3 : addrLines[2],
+            street : street,
             postcode : postcode,
             city : city,
             country : '',
         }
     }
+    // console.log("_address:" + _address)
 
     const lat_lon = coordinates.split(/\s+/).map(parseFloat)
     const _latlng : LatLng = {
