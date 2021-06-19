@@ -37,7 +37,8 @@ Depending on your MySQL environment, you can do this using the
    exit
    ```
 
-4. Import the data:
+4. Import the data. Attention! The script drops existing database. Any existing
+   data will be lost.
    ```
    mysql -uuser --table -p associations < map/database/db-export/associations.sql
    ```

@@ -27,6 +27,10 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `activities`
 --
 
+DROP DATABASE IF EXISTS associations;
+CREATE DATABASE IF NOT EXISTS associations;
+use associations;
+
 CREATE TABLE `activities` (
   `value` varchar(36) NOT NULL,
   `label` varchar(512) NOT NULL,
