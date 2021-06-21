@@ -326,9 +326,12 @@ export class AssociationEditFormComponent implements OnChanges, OnDestroy {
 
               // const data = XLSX.utils.sheet_to_json(ws) // to get 2d array pass 2nd parameter as object {header: 1}
               // console.log(data) // Data will be logged in array format containing objects
-              const assocs : Association[] = getAssociations(ws)
+              const assocs : Association[] = getAssociations(
+                    this.districtOptions
+                  , this.activitiesOptions
+                  , ws)
 
-              for(let a of assocs) {
+              for (let a of assocs) {
                   this.mySqlPersistService.createOrUpdateAssociation(a).toPromise()
                       .then(() => {
                           this.emitBlockUi(false);

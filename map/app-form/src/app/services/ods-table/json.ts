@@ -1,8 +1,46 @@
 import * as o from './ods'
 import * as g from './geo'
+import {DropdownOption} from '../../model/dropdown-option';
 import {Address, LatLng, Association, Contact, Link, SocialMediaLink, TextBlock, SocialMediaPlatform, Image}
        from '../../model/association'
 import {v4 as uuidv4} from 'uuid'
+
+function keywords(thing, options, name, isActivity) : any[] {
+    let list : any[] = new Array()
+    if (thing) {
+        var clean =
+            thing
+                .replace(/\((.*?)\)/g, function(match, token) { return "" })
+                .replace(/\./g, function(match, token) { return "" })
+                .trim()
+        const cleanSplit = clean.split(/, /)
+        // console.log(table)
+        for (let es of cleanSplit) {
+            var found = false
+            for (let eo of options) {
+                if (es == eo.label) {
+                    list.push(eo.value)
+                    // if (
+                    //     isActivity
+                    //     && true
+                    //     // name.startsWith("...")
+                    // ) {
+                    //     console.log(name, es, eo)
+                    // }
+                    found = true
+                    break
+                }
+            }
+            if (!found) {
+                // console.log("Not found: "+es)
+            }
+        }
+    }
+    list = list.filter((e) => { return e }) // remove null elements
+    // console.log(list)
+    // return '["' + list.join('","') + '"]'
+    return list.map((e) => { return e + '' })
+}
 
 // Thanks to https://stackoverflow.com/a/6234804
 function escapeHtml(unsafe) {
@@ -21,7 +59,10 @@ function escapeHtmlWithNull(unsafe) {
     return unsafe ? escapeHtml(unsafe) : ""
 }
 
-function processTableRowAngular(row) : Association {
+function processTableRowAngular(
+      districts : DropdownOption[]
+    , activities : DropdownOption[]
+    , row) : Association {
     const address      = row[o._address]
     const addr_recv    = row[o._addr_recv]
     const contact      = row[o._contact]
@@ -81,8 +122,10 @@ function processTableRowAngular(row) : Association {
     const contactId : string = uuidv4()
     let arrContact : Contact[] = new Array()
     if (contact) {
-        // we'got just 1 contact
-        // TODO better parsing of the contact-field is needed
+        // TODO contact:
+        // 1. we'got just 1 contact
+        // 2. better parsing of the contact-field is needed (e.g. remove the "Tel .")
+        // 3. icons
         let contactDetails = contact.split(/\n/)
 
         const _contact : Contact = {
@@ -149,14 +192,8 @@ function processTableRowAngular(row) : Association {
         }
     }
 
-    let activityList
-    if (activity) {
-        activityList = activity.split(/, /)
-    }
-    let districtList
-    if (cityDistrict) {
-        districtList = cityDistrict.split(/, /)
-    }
+    let activityList = keywords(activity, activities, name, true)
+    let districtList = keywords(cityDistrict, districts, name, false)
 
     const _association : Association = {
         id: associationId,
@@ -185,9 +222,15 @@ function processTableRowAngular(row) : Association {
     return _association
 }
 
-export function getAssociations(fname) : Association[] {
+export function getAssociations(
+      districts : DropdownOption[]
+    , activities : DropdownOption[]
+    , fname) : Association[] {
     const odsTable = o.calcReadTable(fname)
     return odsTable
         .filter((row) => { return row[o._coordinates] })
-        .map(processTableRowAngular)
+        .map((row) => {
+            // TODO partial function application
+            return processTableRowAngular(districts, activities, row)
+        })
 }
