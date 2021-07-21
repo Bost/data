@@ -29,6 +29,7 @@ import RenderFeature from 'ol/render/Feature';
 import Geometry from 'ol/geom/Geometry';
 import Icon from 'ol/style/Icon';
 import {createEmpty, extend, Extent} from 'ol/extent';
+import hexToRgba from 'hex-to-rgba';
 // @ts-ignore
 import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
 import {
@@ -208,6 +209,7 @@ export class OsmMapComponent implements OnInit, OnDestroy {
     const isFiltered: boolean = featureIds.some((id: string) => filteredIds.includes(id));
     const size = originalFeatures?.length;
     let style;
+    const baseColor = '#d13858' // '#ed2227'
     if (!style) {
       if (size && size > 1) {
         style = new Style({
@@ -217,7 +219,7 @@ export class OsmMapComponent implements OnInit, OnDestroy {
               color: '#231f20',
             }),
             fill: new Fill({
-              color: allIncluded ? '#ed2227' : isFiltered ? '#B47172' : '#989898',
+              color: allIncluded ? baseColor : isFiltered ? '#B47172' : '#989898',
             }),
           }),
           text: new Text({
@@ -229,9 +231,13 @@ export class OsmMapComponent implements OnInit, OnDestroy {
           }),
         });
       } else {
+        const noPubAddr = false
+        const noPubAddrColor = '#00bfff' // DeepSkyBlue
+        const color = noPubAddr? noPubAddrColor : baseColor
+
         style = new Style({
           image: new Icon({
-            img: isFiltered ? this.getActiveMarkerImg() : this.getInactiveMarkerImg(),
+            img: isFiltered ? this.getActiveMarkerImg(color) : this.getInactiveMarkerImg(),
             imgSize: [48, 48],
             anchor: [0.5, 1]
           })
@@ -509,11 +515,21 @@ export class OsmMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * return the active marker image element (red marker)
+   * return the active marker image element as an svg-path element. The colors
+   * cannot be in the hex format. Either color-name or RGBA formats are allowed, WTF?
    */
-  getActiveMarkerImg(): HTMLImageElement {
+  getActiveMarkerImg(hexFillColor : string): HTMLImageElement {
     const markerImg: HTMLImageElement = this.renderer2.createElement('img');
-    markerImg.setAttribute('src', 'assets/marker-small.png');
+    const fill = hexToRgba(hexFillColor)
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg">'+
+      '<path fill="'+fill+'" stroke="white" stroke-width="0.50744" d="M 34.58637,33.56877 C 36.5425,30.96358 37.74628,27.7965 37.74628,24.27184 37.74628,15.99655 31.1255,9.25372 23,9.25372 c -8.1255,0 -14.74628,6.74283 -14.74628,15.01812 0,3.52466 1.25394,6.69174 3.15992,9.29693 C 14.37293,37.50208 23,48.58688 23,48.58688 c 0,0 8.62708,-11.0848 11.58637,-15.01811 z" id="path212" />'+
+      '<circle style="fill:white;fill-rule:evenodd" id="path116" cx="23" cy="23.642452" r="5.6927967" />'+
+      '</svg>';
+    // console.log(attr)
+
+    const attr = 'data:image/svg+xml;utf-8,'+svg;
+    markerImg.setAttribute('src', attr);
     return markerImg;
   }
 

@@ -26,6 +26,7 @@
     "@types/ol": "^6.5.3",
     "@types/uuid": "^8.3.1",
     "angular-osm": "^1.2.2",
+    "hex-to-rgba": "^2.0.1",
     "ol": "^6.5.0",
     "ol-ext": "^3.2.3",
     "primeicons": "^4.1.0",
